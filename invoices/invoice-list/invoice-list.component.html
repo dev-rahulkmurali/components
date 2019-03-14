@@ -1,0 +1,83 @@
+<ul class="list-unstyled page-listing page-listing-jobs">
+  <li class="page-listing-header">
+    <ul class="list-unstyled row pd-20">
+      <li class="col-sm-3">
+        <span class="page-listing-header-title">Invoice</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-header-title">Type</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-header-title page-listing-header-caret pointer" (click)="sortContract('invoiceDate')">Invoice Date</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-header-title page-listing-header-caret pointer" (click)="sortContract('cost.amount')">Amount</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-header-title page-listing-header-caret pointer" (click)="sortContract('status')">Status</span>
+      </li>
+      <li class="col-sm-1"></li>
+    </ul>
+  </li>
+  <li class="page-listing-content" *ngFor="let item of listData">
+    <ul class="list-unstyled row">
+      <li class="col-sm-3">
+        <div class="media">
+          <div class="media-body">
+            <div class="page-listing-company-name">{{item.clientName}}</div>
+            <div class="page-listing-company-number">#{{item.invoiceId}}</div>
+          </div>
+        </div>
+      </li>
+      <li class="col-sm-2">
+        <span class="label label-lg-pd-11" [ngClass]="{
+          'label-info-purple': item.type==='SERVICE',
+          'label-info-opaque': item.type==='CONTRACT',
+          'label-success-opaque': item.type==='OTHER'
+        }">{{item.type}}</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-text">{{item.invoiceDate | amDateFormat:'DD MMM YYYY'}}</span>
+      </li>
+      <li class="col-sm-2">
+        <span class="page-listing-dues" [innerHtml]="item.cost.amount | number : '1.2-2' | currency"></span>
+      </li>
+      <li class="col-sm-2">
+        <span class="label label-lg-pd-11" [ngClass]="{
+          'label-info-purple': item.status==='Sent',
+          'label-info-opaque': item.status==='Draft',
+          'label-warning-opaque': item.status==='Awaiting',
+          'label-danger-opaque': item.status==='Pending',
+          'label-success-opaque': item.status==='Paid'
+        }">{{item.status}}</span>
+      </li>
+      <li class="col-sm-1">
+        <div class="page-listing-dropdown">
+          <div class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <span class="page-listing-dots icon-more-2"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+              <li>
+                <a [routerLink]="['/invoice-details', item.id]">View Invoice</a>
+              </li>
+              <li>
+                <a data-toggle="modal" data-target="#addpayment" #paymentAddRef (click)="openPaymentForm()">Add Payment</a>
+              </li>
+              <li>
+                <a data-toggle="modal" data-target="#paymentlist" (click)="openPaymentList(item.serviceInvoice.serviceRequestId)">Payment List</a>
+              </li>
+              <li>
+                <a (click)="downloadInvoice(item.serviceInvoice.serviceRequestId)">Download Invoice</a>
+              </li>
+              <li>
+                <a target="_blank" href="{{PRE_SITE_URL + 'organization_service_history'}}">Send Invoice</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+<template #modalcontainer></template>

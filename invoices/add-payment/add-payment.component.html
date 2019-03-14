@@ -1,0 +1,91 @@
+<div class="modal fade" id="addpayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body modal-body-lg-d">
+        <h3 class="mg-0 mr-bt-40 fs-22">Add Payment</h3>
+        <span class="close close-t-r" data-dismiss="modal" aria-label="Close">
+          <span class="ui-close-18"></span>
+        </span>
+        <p class="modal-text mr-bt-30">
+          The current balance for Contract: #25 Maintenance Contract is
+          <a href="#">$6,528.00</a>
+          <br/>Would you like to add a payment entry?</p>
+        <form class="form-fields" #paymentForm="ngForm" (ngSubmit)="savePayment(paymentForm)">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label class="label-lt" for="firstName">Amount</label>
+                <input type="text" class="form-control" id="amount" [(ngModel)]="paymentPayload.amount" name="amount" #amount="ngModel" required>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label class="label-lt" for="firstName">Reference Number</label>
+                <input type="text" class="form-control" id="referenceNumber" [(ngModel)]="paymentPayload.referenceNumber" name="referenceNumber" #referenceNumber="ngModel" required>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group form-group-input-padded clearfix">
+                <label class="label-lt" for="firstName">Choose Invoice</label>
+                  <ng-select [items]="invoices"
+                            placeholder="Invoice Name"
+                            bindLabel="clientName"
+                            bindValue="id"
+                            [(ngModel)]="paymentPayload.invoiceId"
+                            name="invoiceId"
+                            (add)="updateServiceRequestId($event)"
+                            #invoiceId="ngModel"
+                            required>
+                  </ng-select>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group form-group-input-padded clearfix">
+                <label class="label-lt" for="firstName">Payment Method</label>
+                  <ng-select [(ngModel)]="paymentPayload.paymentMethod" name="paymentMethod" #paymentMethod="ngModel" required>
+                    <ng-option [value]="'CASH'">Cash</ng-option>
+                    <ng-option [value]="'CHEQUE'">Cheque</ng-option>
+                    <ng-option [value]="'FAST_TRANSFER'">FAST Transfer</ng-option>
+                    <ng-option [value]="'OTHER'">Others</ng-option>                    
+                  </ng-select>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group form-group-input-padded clearfix">
+                <label class="label-lt" for="firstName">Payment Received by</label>
+                  <ng-select [(ngModel)]="paymentPayload.collectedBy" name="collectedBy" #collectedBy="ngModel" required>
+                    <ng-option *ngFor="let user of users" [value]="user.id">{{user.addresses[0].firstName}} {{user.addresses[0].lasttName}}</ng-option>
+                  </ng-select>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group form-group-input-padded clearfix">
+                <label class="label-lt clearfix" for="firstName">Payment Received Time</label>
+                <p-calendar [(ngModel)]="collectedTime" name="collectedTime" showTime="true" hourFormat="24" inputStyleClass="form-control" readonlyInput="true"></p-calendar>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <hr class="modal-hr mr-tp-10">
+            </div>
+            <div class="col-xs-12">
+              <p class="modal-text mr-bt-0">The remaining balance would be:
+                <a href="">$6,528.00</a>
+                <br/>Would you like to add a payment entry?</p>
+            </div>
+            <div class="col-xs-12">
+              <div class="form-group text-right mg-0 form-footer mr-tp-50">
+                <button type="button" #cancelRef class="btn btn-default btn-md btn-uc mr-r-18" data-dismiss="modal">Close</button>
+                <button type="submit" [disabled]="!paymentForm.form.valid" class="btn btn-primary btn-md btn-uc">Update</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

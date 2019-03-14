@@ -1,0 +1,45 @@
+
+<div class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="200"
+  (scrolled)="onScroll()">
+  <div id="container-body">
+    <div class="container">
+      <div class="row page">
+        <app-list-header (filterClick)="filterClick()" [isFilter] = "isFilter"  (removeFilter) = "removeFilter()" [listTitle]="'Invoices'" [subFilter]="true" [page]="'invoices'"></app-list-header>
+        <div class="col-xs-12">
+          <div class="page-content">
+            <div class="page-list">
+              <div>
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#all" aria-controls="all" role="tab" data-toggle="tab">All</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#pending" aria-controls="pending" role="tab" data-toggle="tab">Pending</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#upcoming" aria-controls="upcoming" role="tab" data-toggle="tab">Upcoming</a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="all">
+                    <app-invoice-list [listData]="allInvoices"></app-invoice-list>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="pending">
+                    <app-invoice-list [listData]="pendingInvoices"></app-invoice-list>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="upcoming">
+                    <app-invoice-list [listData]="upcomingInvoices"></app-invoice-list>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-list-filter (closeFilter)="closeFilter()" (removeCloseButton)="removeCloseButton()" [isReset] = "isReset.asObservable()" (outputFilter)="applyFilter($event)" [filterActive]="filterActive" [page]="'invoices'" [clients]="clients" [contracts]="contracts"></app-list-filter>
+  </div>
+</div>

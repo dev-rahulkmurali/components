@@ -1,0 +1,106 @@
+<div class="modal fade bs-example-modal-lg" id="paymentlist" tabindex="-1" role="dialog" aria-labelledby="listModalLabel" style="display:block">
+  <div class="modal-dialog modal-lg modal-lg-1230" role="document">
+    <div class="modal-content">
+      <div class="modal-body modal-body-lg-d pd-btm-35">
+        <span class="close close-t-r" #cancelRef data-dismiss="modal" aria-label="Close">
+          <span class="ui-close-18"></span>
+        </span>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="card-title-group">
+              <h2 class="card-h2 pull-left">Payments</h2>
+              <a class="btn btn-default pull-right" (click)="paymentForm()">
+                <span class="ui-plus-16 mr-r-5"></span>
+                New Payment
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="page-content card-settings">
+              <div class="page-list">
+                <ul class="list-unstyled page-listing mr-bt-0">
+                  <li class="page-listing-header">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title">Date &amp; Time</span>
+                      </li>
+                      <li class="col-xs-1">
+                        <span class="page-listing-header-title">Type</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title">Payment Received by</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title">Entry Recorded by</span>
+                      </li>
+                      <li class="col-xs-1">
+                        <span class="page-listing-header-title">Amount</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title">Payment Method</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title">Reference Number</span>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="page-listing-content" *ngFor="let payment of paymentList">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-2">
+                        <div class="media">
+                          <div class="media-body">
+                            <span class="page-listing-company-name">{{payment.collectedTime | date: 'dd/MM/yyyy h:mm a'}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="col-xs-1">
+                        <div class="media">
+                          <div class="media-body">
+                            <span class="page-listing-text">{{payment.typeOfPayment}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-text">{{payment._refs.client.displayFullName}}</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-text">{{payment._refs.recordedBy.firstName}} {{payment._refs.recordedBy.lastName}}</span>
+                      </li>
+                      <li class="col-xs-1">
+                        <span class="page-listing-text" [innerHtml]="payment.amount | number : '1.2-2' | currency"></span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-text">{{payment.paymentMethod}}</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-text">{{payment.referenceNumber}}</span>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="page-listing-content pd-btm-5">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-7"></li>
+                      <li class="col-xs-5 text-right">
+                        <dl class="dl-horizontal card-cart-details">
+                          <dt class="card-cart-title fs-18">Total Payments :</dt>
+                          <dd class="card-cart-title card-cart-title-bl" [innerHtml]="total | number : '1.2-2' | currency"></dd>
+                          <dt class="card-cart-title fs-18">Contract Amount :</dt>
+                          <dd class="card-cart-title card-cart-title-bl" [innerHtml]="contractAmount | number : '1.2-2' | currency"></dd>
+                          <dt class="card-cart-title fs-24 mr-tp-10" *ngIf="contractAmount===total">Fully Paid:</dt>
+                          <dt class="card-cart-title fs-24 mr-tp-10" *ngIf="contractAmount > total">Balance Amount:</dt>
+                          <dd class="card-cart-title fs-24 mr-tp-10  card-cart-title-bl" [innerHtml]="balanceAmount | number : '1.2-2' | currency"></dd>
+                        </dl>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+<div id="container-body">
+  <div class="container">
+    <div class="row page">
+      <div class="col-xs-7 col-xs-offset-2">
+        <div class="group-header mr-tb-35 clearfix">
+          <a [routerLink]="'/invoices'" class="btn btn-default pull-left btn-uc btn-back">Back to invoice list</a>
+          <div class="rlve">
+            <span class="dropdown pull-right rt-0">
+              <a class="dropdown-toggle btn btn-primary btn-uc btn-action" data-toggle="dropdown" href="!#">Actions</a>
+              <ul class="dropdown-menu dropdown-user">
+                <li>
+                  <a href="#">Download Invoice</a>
+                </li>
+                <li class="active">
+                  <a href="#" data-toggle="modal" data-target="#myModalpayment">Send Invoice</a>
+                </li>
+                <li>
+                  <a href="#" data-toggle="modal" data-target="#addpayment" href="javascript:void(0)">Add Payment</a>
+                </li>
+                <li>
+                  <a href="#" href="javascript:void(0)">QBO SYNCH</a>
+                </li>
+              </ul>
+            </span>
+          </div>
+        </div>
+
+        <div class="card card-bs-shdw">
+          <div class="quick-body quick-body-card media-padded-75-70-45 card-bg-lt-gray">
+            <div class="media-no-border">
+              <div class="media-content media-invoice">
+                <div class="media">
+                  <div class="media-left">
+                    <div class="media-ui-img">
+                      <img class="img-responsive" src="{{invoice.entityLogoURL}}"
+                        alt="" />
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <h2 class="media-heading">Airbnb Co.</h2>
+                    <span class="media-date">Maintenance Service</span>
+                    <span class="label label-info-opaque label-lg-pd-11">{{invoice.status}}</span>
+
+
+                    <div class="media-right">
+                      <span class="amount-text">Amount Due (USD)</span>
+                      <span class="amount-text-lg">${{invoice.amount}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <span class="invoice-gray-text">Billing To</span>
+                <address class="invoice-address">
+                  <b>Airbnb HQ</b>
+                  <br/> 1263 Mission Street, Floor 3
+                  <br/> San Francisco CA 94103
+                  <br/> United States
+                  <br/>
+                  <br/> +1 (415) 877-112
+                  <br/> clark@airbnb.com
+                </address>
+              </div>
+              <div class="col-xs-6">
+                <dl class="dl-horizontal pull-right dl-horizontal-list">
+                  <dt>Invoice Number:</dt>
+                  <dd>0090/ 2055</dd>
+                  <dt>Invoice Date:</dt>
+                  <dd>December 20, 2017</dd>
+                  <dt>Invoice Term:</dt>
+                  <dd>Jan 2018-Feb 2018</dd>
+                  <dt>Payment Due:</dt>
+                  <dd>December 28, 2017</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-body quick-card-body card-35-70">
+            <div class="page-content card-settings">
+              <div class="page-list">
+                <ul class="list-unstyled page-listing">
+                  <li class="">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-6">
+                        <span class="page-listing-header-title">Service/ Product</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title ">Hours</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-header-title ">Rate</span>
+                      </li>
+
+                      <li class="col-xs-2 text-right">
+                        <span class="page-listing-header-title  ">Total</span>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="page-listing-content" *ngFor="let service of invoice.assignedServiceRequests">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-6">
+                        <div class="media">
+                          <div class="media-body">
+                            <span class="page-listing-company-name">{{service.serviceName}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="col-xs-2">
+                        <span class="page-listing-text">{{service.durationHours}}.{{service.durationMinutes}}</span>
+                      </li>
+                      <li class="col-xs-2">
+                        <div class="media">
+                          <div class="media-body">
+                            <span class="page-listing-text">$450.00</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="col-xs-2 text-right">
+                        <span class="page-listing-text" [innerHtml]="service.totalPrice | number : '1.2-2' | currency"></span>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="page-listing-content pd-btm-5">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-7"></li>
+                      <li class="col-xs-5 text-right">
+                        <dl class="dl-horizontal card-cart-details">
+                          <dt class="card-cart-title fs-18">Subtotal</dt>
+                          <dd class="card-cart-title card-cart-title-bl">$1625.00</dd>
+                          <dt class="card-cart-title-sub">Discount(5%)</dt>
+                          <dd class="card-cart-title-sub card-cart-title-sub-bl">81.25</dd>
+                          <dt class="card-cart-title-sub">Tax(5%)</dt>
+                          <dd class="card-cart-title-sub card-cart-title-sub-bl">81.25</dd>
+                        </dl>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="page-listing-content">
+                    <ul class="list-unstyled row">
+                      <li class="col-xs-7"></li>
+                      <li class="col-xs-5 text-right">
+                        <dl class="dl-horizontal">
+                          <dt class="card-cart-title text-left fs-24">Subtotal</dt>
+                          <dd class="card-cart-title card-cart-title-bl fs-24">$1625.00</dd>
+                        </dl>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <hr class="line-horizon" />
+            </div>
+            <div class="mr-bt-15 text-gray-footer">
+              <div class="row">
+                <div class="col-xs-5">Invoice Term: January 2018 to February 2018</div>
+                <div class="col-xs-3">clark@airbnb.com</div>
+                <div class="col-xs-4 text-right">+1 (415) 877-112</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
