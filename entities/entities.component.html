@@ -1,0 +1,70 @@
+<div class="col-xs-9 col-md-10">
+<div class="tab-content pd-45 pd-b-100">
+    <span class="vertical-line"></span>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card-title-group">
+                    <h2 class="card-h2 pull-left">Entities</h2>
+                    <a class="btn btn-default pull-right" (click)="addEntity()" id="newEntity" data-toggle="modal" data-target="#addnewEntity">
+                        <span class="ui-plus-16 mr-r-5"></span>
+                        New Entity
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="page-content">
+                    <div class="page-list">
+                        <ul *ngIf="entities" else noEntities class="list-unstyled page-listing page-listing-entities">
+                            <li *ngFor="let entity of entities; let i=index;" class="page-listing-content">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <ul class="list-unstyled list-inline media-icons">
+                                            <li>
+                                                <a (click)="editEntity(entity,i)" data-toggle="modal" data-target="#addnewEntity"><span class="icon-16 ib ui-edit-16"></span></a>
+                                            </li>
+
+                                        </ul>
+
+                                        <div class="media-thumbnail">
+                                            <div class="media-thumbnail-inner">
+                                                <img *ngIf="entity.image!==null" else noImg src="{{entity.image.url}}">
+                                                <span *ngIf="entity.image===null" class="ui-plus-16 add-icon"></span>
+                                            </div>
+                                        </div>
+                                        <h4 class="media-heading">{{entity.entityName}}</h4>
+                                        <ul class="list-unstyled color-grape-blue">
+                                            <li>
+                                                <span class="icon icon-14 ib ui-phone-18 mr-bt-10 mr-r-5">
+                                                </span>
+                                                <span class="ib mr-bt-10">{{entity.address.phoneNumber?entity.address.phoneNumber:''}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="icon icon-14 ib ui-mail-16 mr-bt-10 mr-r-5"></span>
+                                                <span class="ib mr-bt-10">{{entity.address.email?entity.address.email:''}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="icon icon-14 ib ui-locations-alt-18 mr-bt-10 mr-r-5"></span>
+                                                <span class="ib mr-bt-10">{{entity.address.address1?entity.address.address1:''}},<br/>{{entity.address.address2?entity.address.address2:''}},<br/>{{entity.address.city?entity.address.city:''}}{{entity.address.city?',':''}} {{entity.address.country?entity.address.country:''}}, {{entity.address.zipCode?entity.address.zipCode:''}}</span>
+                                            </li>
+                                        </ul>
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <p class="color-grape-blue">{{entity.description}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ng-template #noEntities>
+                            No Results Found
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template #modalcontainer></template>

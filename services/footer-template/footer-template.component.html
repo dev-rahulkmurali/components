@@ -1,0 +1,41 @@
+<div class="page-content">
+  <div class="page-list">
+      <ul class="list-unstyled page-listing">
+          <li class="page-listing-header">
+              <ul class="list-unstyled row">
+                  <li class="col-xs-2">
+                      <span class="page-listing-header-title">TEMPLATE NAME</span>
+                  </li>
+                  <li class="col-xs-2">
+                    <span class="page-listing-header-title">DESCRIPTION</span>
+                </li>
+                  <li class="col-xs-6"></li>
+              </ul>
+          </li>
+          <ng-container *ngIf="templates">
+              <li class="page-listing-content" *ngFor="let template of templates; let i=index">
+                  <ul class="list-unstyled row flex-start pg-row-pd-5">
+                      <li class="col-xs-2">
+                          <span class="page-listing-company-name">{{template.name}}</span>
+                      </li>
+                      <li class="col-xs-5">{{template.template}}</li>
+                      <li class="col-xs-2 card-settings-tooltip text-right">
+                          <ul class="list-inline mr-r-30">
+                              <li>
+
+                                  <span (click)="editFooterForm(template)" class="ui-edit-16" id="newFooter" data-toggle="modal" data-target="#edit-footer" href="javascript:void(0)"></span>
+                              </li>
+                              <li>
+                                  <span (click)="deleteTemplate(template.id,i)" class="ui-delete-18" role="button" data-toggle="tooltip" data-placement="top"
+                                      title="Delete"></span>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </li>
+          </ng-container>
+      </ul>
+  </div>
+</div>
+
+<template #editmodalcontainer></template>

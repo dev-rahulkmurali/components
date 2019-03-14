@@ -1,0 +1,51 @@
+<div class="modal fade" id="edit-footer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:block">
+  <div class="modal-dialog wth-1100" role="document">
+    <div class="modal-content">
+      <div class="modal-body modal-body-lg-d ">
+        <div class="modal-header">
+          <h3 class="modal-heading">Edit Footer Templates</h3>
+          <span class="close close-t-r" data-dismiss="modal" aria-label="Close">
+            <span class="ui-close-18"></span>
+          </span>
+        </div>
+        <div class="modal-body">
+          <form class="form-ui form-ui-modal"  #templateForm="ngForm" (ngSubmit)="saveTemplate(templateForm)">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-pd-wrapper">
+                  <div class="form-group mr-bt-20">
+                    <label for="name">Template Name</label>
+                    <input type="text" class="form-control" placeholder="Template Name"
+                      [(ngModel)]="template.name" name="templateName"
+                      #name="ngModel"
+                      required>
+                  </div>
+
+                  <div class="form-group mr-bt-20">
+                    <label for="template">Template Content</label>
+                    <textarea class="form-control" rows="4" placeholder="Template Content"
+                      [(ngModel)]="template.template" name="template"
+                      #description="ngModel">
+                    </textarea>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <hr class="modal-hr" />
+
+            <div class="form-group text-right mg-0 mr-50">
+              <button #cancelRef type="button" class="btn btn-default btn-md" data-dismiss="modal">Close</button>
+              <button [disabled]="!templateForm.form.valid" type="submit" class="btn btn-primary mr-0 btn-md">Save</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

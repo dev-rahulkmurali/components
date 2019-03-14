@@ -1,0 +1,200 @@
+<div  class="modal fade" id="edit-service" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog wth-1100" role="document">
+        <div class="modal-content">
+            <div class="modal-body modal-body-lg-d ">
+                <div class="modal-header">
+                    <h3 class="modal-heading">Add Form Template</h3>
+                    <span class="close close-t-r" data-dismiss="modal" aria-label="Close">
+                    <span class="ui-close-18"></span>
+                    </span>
+                </div>
+                <div class="modal-body">
+                    <form class="form-ui form-ui-modal" #templateForm="ngForm" (ngSubmit)="secondStep?saveTemplate():onNext() && templateForm.form.valid">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="clearfix">
+                                    <div class="form-group-title">
+                                        <h3>Form Info</h3>
+                                    </div>
+                                    <div class="form-group form-group-input-padded">
+                                        <input [(ngModel)]="form.label" name="label" type="text" class="form-control" id="fomLabel" value="{{form.label}}" #name="ngModel"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="page-tabs card-settings">
+                                    <ul class="nav nav-tabs mrb-45">
+                                        <li [ngClass]="{'active': isManageActive}" (click)="setClass('manage')"><a data-toggle="tab" href="#managelist">Manage List Columns</a></li>
+                                        <li [ngClass]="{'active': isActive}" (click)="setClass('list')"><a data-toggle="tab" href="#lisitems">List Items</a></li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div id="managelist" class="tab-pane fade" [ngClass]="{'in active': isManageActive}">
+                                            <div class="page-content">
+                                                <div class="page-list card-edit">
+                                                    <ul class="list-unstyled page-listing">
+                                                        <li class="page-listing-header">
+                                                            <ul class="list-unstyled row">
+                                                                <li class="col-xs-4"><span class="page-listing-header-title pd-l-35">Field</span></li>
+                                                                <li class="col-xs-3"><span class="page-listing-header-title">Type</span></li>
+                                                                <li class="col-xs-3"><span class="page-listing-header-title ">DEFAULT VALUE</span></li>
+                                                                <li class="col-xs-2"></li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li class="page-listing-content" *ngFor="let field of fields; let i=index">
+                                                            <ul class="list-unstyled row">
+                                                                <li class="col-xs-4">
+                                                                    <div class="form-move pd-l-25 rlve">
+                                                                        <span class="icon-grab"></span>
+                                                                        <input [(ngModel)]="field.label" name="label{{i}}" type="text" class="form-control" value="{{field.label}}" #label="ngModel"
+                                                                            required>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="col-xs-3">
+                                                                    <ng-select (change)="setType($event, i)" [(ngModel)]="field.type" name="types{{i}}" [items]="formTypes" bindValue="id" bindLabel="name">
+                                                                    </ng-select>
+
+                                                                </li>
+                                                                <li class="col-xs-3">
+                                                                    <div class="form-move">
+                                                                        <input value="{{field.value}}" *ngIf="field.type=== 'TEXT'" [(ngModel)]="field.value" name="value1{{i}}" type="text" class="form-control"
+                                                                            id="taskName"  placeholder="Default Value">
+                                                                        <input value="{{field.value}}" *ngIf="field.type==='NUMBER'" (keypress)="numberOnly($event)" [(ngModel)]="field.value" name="value2{{i}}" type="text" class="form-control"
+                                                                            id="taskName"  placeholder="Default Value">
+                                                                        <div class="checkbox checkbox-settings-section pd-top-0" *ngIf="field.type==='CHECKBOX'">
+                                                                            <label>
+                                                                                <span class="checkbox-wrap">
+                                                                                    <input   value="{{field.value}}"  name="value3{{i}}" type="checkbox"
+                                                                                    (click)="setCheckboxStatus(i, field.value)"
+                                                                                    class="checkbox-input" id="taskName" [(ngModel)]="field.value"
+                                                                                    placeholder="Default Value">
+
+                                                                                    <span class="input-icon"></span>
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+
+                                                                        <ng-container *ngIf="field.type==='DROPDOWN'">
+                                                                            <select [(ngModel)]="field.value" name="value{{i}}" class="form-control">
+                                                                              <option *ngFor="let item of field.dropdownChoices">{{item}}</option>
+                                                                            </select>
+                                                                          <button class="btn btn-secondary" type="button" (click)="addDropdownValue$.next({'index':i,'dropindex':dropIndex});"><i class="fa fa-plus"></i></button>
+
+
+                                                                    <ng-container *ngIf="dropDownList[i].dropdownValues">
+                                                                        <span *ngFor="let item of dropDownList[i].dropdownValues; let dropIndex=index;">
+                                                                           <input class="form-control" name="value" (keyup)="addValue$.next({'event':$event.target.value,'index':i,'dropindex':dropIndex})" type="text" placeholder="List Value" value="{{item}}" >
+                                                                        </span>
+                                                                    </ng-container>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="col-xs-2 card-settings-tooltip text-right">
+                                                                    <ul class="list-inline mr-r-30">
+                                                                        <li>
+                                                                            <span class="ui-delete-18 pointer" data-toggle="tooltip" data-placement="top" (click)="deleteField(i)" title="Delete"></span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+
+                                                    <hr class="mr-tp-5" />
+                                                    <div class="card-title-group clearfix">
+                                                        <a class="btn btn-default pull-right mr-tp-0" (click)="addField()" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">
+                                                        <span class="ui-plus-16 mr-r-5"></span>
+                                                        Add List Column
+                                                    </a>
+                                                    </div>
+                                                    <hr class="clearfix  mr-bt-50" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="lisitems" class="tab-pane fade" [ngClass]="{'in active': isActive}">
+                                            <div class="page-content">
+                                                <div class="page-list card-edit">
+                                                    <ul class="list-unstyled page-listing" *ngFor="let items of FieldData.fields; let dataIndex=index;  ">
+                                                        <li class="page-listing-header">
+                                                            <ul class="list-unstyled row">
+                                                                <li *ngFor="let field of items; let fi=index; let last = last;" class="col-xs-{{classValue}}">
+                                                                    <span class="page-listing-header-title" *ngIf="dataIndex == '0'">{{field.label?field.label:''}}</span></li>
+
+                                                            </ul>
+                                                        </li>
+
+                                                        <li class="page-listing-content" *ngFor="let field of items; let findx = index" class="col-xs-{{classValue}}">
+                                                            <ul class="list-unstyled row lg-pd">
+                                                                <li *ngIf="field.type === 'TEXT'">
+                                                                    <div class="form-move">
+                                                                        <input name="fieldName{{dataIndex}}{{findx}}"  [(ngModel)]="items[findx].value"   type="text" class="form-control">
+                                                                    </div>
+                                                                </li>
+                                                                <li *ngIf="field.type === 'CHECKBOX'">
+                                                                    <div class="checkbox checkbox-settings-section pd-top-0">
+                                                                        <label>
+                                                                        <span class="checkbox-wrap">
+                                                                            <input  name="fieldName{{dataIndex}}{{findx}}" type="checkbox" class="checkbox-input" [checked]="field.value"   [(ngModel)]="items[findx].value">
+                                                                            <span class="input-icon"></span>
+                                                                        </span>
+                                                                    </label>
+                                                                    </div>
+                                                                </li>
+                                                                <li *ngIf="field.type === 'NUMBER'">
+                                                                    <div class="form-move">
+                                                                        <input type="number" name="fieldNum{{dataIndex}}{{findx}}" class="form-control" id="taskName" placeholder="Input Text"  [(ngModel)]="items[findx].value">
+                                                                    </div>
+                                                                </li>
+
+                                                                <li *ngIf="field.type==='DROPDOWN'">
+                                                                    <select name="value" class="form-control">
+                                                                        <option *ngFor="let item of field.dropdownChoices" >{{item}}</option>
+                                                                    </select>
+
+                                                                <!-- <ng-select  name="types" [items]="field.dropdownChoices" bindValue="id" bindLabel="name">
+                                                                </ng-select> -->
+                                                                </li>
+                                                            </ul>
+
+                                                        </li>
+                                                        <li class="col-xs-2 card-settings-tooltip text-right">
+                                                            <ul class="list-inline mr-r-30">
+                                                                <li (click)="deleteDataField(dataIndex)">
+                                                                    <span class="ui-delete-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"></span>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <hr class="clearfix mr-bt-50" />
+
+                                                    </ul>
+                                                    <ul class="list-inline mr-r-30 pull-right">
+                                                        <li (click)="addDataField()" class="list-plus">
+                                                            <span class="add-icon-ui" data-toggle="tooltip" data-placement="top" title="" data-original-title="add">
+                                                                <span class="ui-plus-16"></span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right mg-0 mr-50">
+                            <button type="button" #closeDiv class="btn btn-default btn-md" data-dismiss="modal">Close</button>
+                            <button type="submit" [disabled]="!templateForm.form.valid" class="btn btn-primary mr-0 btn-md">{{secondStep?"UPDATE":"NEXT"}}</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

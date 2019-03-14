@@ -1,0 +1,393 @@
+<div class="modal fade" id="editService" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog wth-1100" role="document">
+      <div class="modal-content">
+        <div class="modal-body modal-body-lg-d ">
+          <div class="modal-header">
+            <h3 class="modal-heading">Update Service Templates</h3>
+            <span (click)="close()" class="close close-t-r" data-dismiss="modal" aria-label="Close">
+              <span class="ui-close-18"></span>
+            </span>
+          </div>
+          <div class="modal-body">
+            <form class="form-ui form-ui-modal"  #serviceForm="ngForm" (ngSubmit)="updateService(serviceForm)">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-pd-wrapper">
+                    <div class="form-group mr-bt-20">
+                      <label for="service">Service Name</label>
+                      <input type="text" class="form-control" placeholder="Service Name" 
+                        [(ngModel)]="service.servicesName" name="servicesName"
+                        #name="ngModel"
+                        required>                      
+                    </div>
+  
+                    <div class="form-group mr-bt-20">
+                      <label for="descriptiopn">Descriptiopn</label>
+                      <textarea class="form-control" rows="4" placeholder="Service Description" 
+                        [(ngModel)]="service.serviceDescription" name="serviceDescription"
+                        #description="ngModel">
+                      </textarea>
+                    </div>
+  
+                    <div class="form-pd-price">
+                      <div class="form-price">
+                        <dl class="dl-horizontal">
+                          <dt>Cost:</dt>
+                          <dd>${{service.totalCost}}</dd>
+                          <dt>Duration:</dt>
+                          <dd>{{getTotalDuration(service.totalHours, service.totalMinutes)}} hrs</dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row pg-row-pd-5">
+                <div class="col-xs-12">
+                  <div class="form-group-title">
+                    <h3>Forms:</h3>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="form-group mr-bt-20 clearfix">
+
+                    <ng-select [items]="customForms" name="formIndex" bindLabel="label" bindValue="id" [(ngModel)]="formIndex" placeholder="Choose Form Template">
+                    </ng-select>
+                  </div>
+                </div>
+  
+                <div class="col-xs-2">
+                  <a class="btn btn-primary btn-uc btn-purple pd-12-18" (click)="addForm()">
+                    <span class="ui-plus-16 mr-r-5"></span>Add Form</a>
+                </div>
+              </div>
+              
+              <div class="row" *ngFor="let form of service.customForms; let i=index">
+                <div class="col-xs-12">
+                  <div class="form-group-title mr-bt-12 clearfix">
+                    <h3 class="pull-left">{{form.label}}</h3>
+                    <button type="button" class="btn btn-default btn-sm pull-right btn-uc" (click)="removeForm(form.id)">
+                      <span class="item-icon-remove mr-r-5"></span> Remove Form
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="col-xs-12">
+                    
+                  <ul class="list-unstyled page-listing page-listing-borderd mr-bt-18 card-settings card-form-mrg-0">
+                    <li class="page-listing-header">
+                      <ul class="list-unstyled row">
+                        <li class="col-2-5" *ngFor="let heading of form.fields;">
+                          <span class="page-listing-header-title">{{heading.label}}</span>
+                        </li>                      
+                      </ul>
+                    </li> 
+  
+                    <li class="pd-r-50 page-listing-content" *ngFor="let f of form.fields; let ii=index">
+                        
+                        <ul class="list-unstyled row flex-start pg-row-pd-5 mg-7">
+                          <li class="col-2-5" *ngFor="let el of f; let iii=index">
+                            <div class="form-group" *ngIf="el.type==='TEXT'">
+                              <label class="sr-only" for="Brand">{{el.label}}</label>
+                              <input type="text" class="form-control" [(ngModel)]="form.fields[ii][iii].value" name="field{{ii}}{{iii}}" placeholder="{{el.label}}">
+                            </div>
+                            
+                            <div class="form-group" *ngIf="el.type==='CHECKBOX'">
+                              <label class="sr-only" for="Brand">{{el.label}}</label>
+                              <span class="checkbox-wrap service-ck-wrap">
+                                <input type="checkbox" [(ngModel)]="form.fields[ii][iii].value" name="field{{ii}}{{iii}}" class="checkbox-input">
+                                <span class="input-icon"></span>
+                              </span>
+                            </div>
+  
+                            <div class="form-group" *ngIf="el.type==='NUMBER'">
+                              <label class="sr-only" for="Brand">{{el.label}}</label>
+                              <input type="number" [(ngModel)]="form.fields[ii][iii].value" name="field{{ii}}{{iii}}" min="0" class="form-control" placeholder="{{el.label}}" >
+                            </div>
+  
+                            <div class="form-group" *ngIf="el.type==='DROPDOWN'">
+                              <label class="sr-only" for="Brand">{{el.label}}</label>
+                              <ng-select [(ngModel)]="form.fields[ii][iii].value" 
+                                        name="field{{ii}}{{iii}}" 
+                                        [items]="el.dropdownChoices"
+                                        placeholder="Choose Form">                                    
+                              </ng-select>
+                            </div>
+                          </li>
+                         
+                          <li class="col-12">
+                            <span (click)="createField(i, ii)" class="item-icon item-left item-remove">
+                              <span class="ui-plus-16"></span>
+                            </span>
+                            <span (click)="deleteField(i, ii)" class="item-icon item-left item-icon-sm item-icon-delete">
+                              <span class="ui-delete-18" role="button"></span>
+                            </span>
+                          </li>
+                        </ul>
+                      
+                    </li>
+                  </ul>
+                </div>
+              </div>            
+  
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group-title">
+                    <h3 class="pull-left mr-bt-0">Tasks</h3>
+                  </div>
+                </div>
+  
+                <div class="col-xs-12">
+                  <ul class="list-unstyled page-listing page-listing-borderd mr-bt-18 card-settings card-form-mrg-0">
+                    <li class="page-listing-header">
+                      <ul class="list-unstyled row">
+                        <li class="col-xs-6">
+                          <span class="page-listing-header-title">Task</span>
+                        </li>
+                        <li class="col-xs-2">
+                          <span class="page-listing-header-title">Duration</span>
+                        </li>
+                        <li class="col-xs-3">
+                          <span class="page-listing-header-title">Cost</span>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li class="page-listing-content" *ngFor="let task of service.tasks; let j=index">
+                      <ul class="list-unstyled row flex-start pg-row-pd-5">
+                        <li class="col-xs-6">
+                          <div class="form-group">
+                            <label class="sr-only" for="taskName">Task Name</label>
+                              <ng-select [items]="tasks"
+                                        placeholder="Task Name"
+                                        bindLabel="taskName"
+                                        bindValue="id"
+                                        [(ngModel)]="task.id"
+                                        name="taskName{{j}}"
+                                        #taskName="ngModel"
+                                        (add)="fillTaskDetails($event, j)">
+                              </ng-select>
+                          </div>
+                        </li>
+                        <li class="col-xs-1">
+                          <div class="form-group">
+                            <label class="sr-only" for="durationHours">Duration</label>
+                            <input type="number" min="0" step="1" class="form-control" placeholder="HH" 
+                              required 
+                              [(ngModel)]="task.durationHours" 
+                              name="durationHours{{j}}"
+                              #durationHours="ngModel" (input)="onDurationChange()">
+                          </div>
+                        </li>
+                        <li class="col-xs-1">
+                          <div class="form-group">
+                            <label class="sr-only" for="durationMinutes">Duration</label>
+                            <input type="number" min="0" step="1" class="form-control" placeholder="MM" 
+                              required 
+                              [(ngModel)]="task.durationMinutes" 
+                              name="durationMinutes{{j}}"
+                              #durationMinutes="ngModel" (input)="onDurationChange()">
+                          </div>
+                        </li>
+                        <li class="col-xs-3">
+                          <div class="form-group">
+                            <label class="sr-only" for="cost">Cost</label>
+                            <input type="number" min="0" step="1" class="form-control" placeholder="0" 
+                              required 
+                              [(ngModel)]="task.cost" 
+                              name="cost{{j}}" 
+                              #cost="ngModel" (input)="onCostChange($event)">
+                          </div>
+                          <span (click)="createTaskList()" class="item-icon item-icon-sm">
+                            <span class="ui-plus-16"></span>
+                          </span>                    
+                          <span *ngIf="j>0" (click)="deleteTaskList(j)" class="item-icon item-icon-delete item-icon-lg">
+                            <span class="ui-delete-18" role="button"></span>
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group-title">
+                    <h3 class="pull-left">Service Parts</h3>
+                  </div>
+                </div>
+  
+                <div class="col-xs-12">
+                  <ul class="list-unstyled page-listing page-listing-borderd mr-bt-18 card-settings card-form-mrg-0">
+                    <li class="page-listing-header">
+                      <ul class="list-unstyled row">
+                        <li class="col-xs-5">
+                          <span class="page-listing-header-title">Part Name</span>
+                        </li>
+                        <li class="col-xs-2">
+                          <span class="page-listing-header-title">Unit Cost</span>
+                        </li>
+                        <li class="col-xs-2">
+                          <span class="page-listing-header-title">Quantity</span>
+                        </li>
+                        <li class="col-xs-2">
+                          <span class="page-listing-header-title ">Total Cost</span>
+                        </li>
+                      </ul>
+                    </li>
+  
+                    <li class="page-listing-content" *ngFor="let part of service.parts; let k=index">
+                      <ul class="list-unstyled row flex-start pg-row-pd-5">
+                        <li class="col-xs-5">
+                          <div class="form-group">
+                            <label class="sr-only" for="partname">Part Name</label>
+                            <input type="text" class="form-control" placeholder="Part Name" 
+                              required 
+                              [(ngModel)]="part.partName" name="partName{{k}}" 
+                              #partName="ngModel">
+                          </div>
+                        </li>
+                        <li class="col-xs-2">
+                          <div class="form-group">
+                            <label class="sr-only" for="partCost">Unit Cost</label>
+                            <input type="number" min="0" step="1" class="form-control" placeholder="Unit Cost" 
+                              required 
+                              [(ngModel)]="part.partCost" name="partCost{{k}}" 
+                              #partCost="ngModel" (input)="onPartValueChange($event, k)">
+                          </div>
+                        </li>
+                        <li class="col-xs-2">
+                          <div class="form-group">
+                            <label class="sr-only" for="partCount">Quantity</label>
+                            <input type="number" min="0" step="1" class="form-control" placeholder="Quantity" 
+                              required 
+                              [(ngModel)]="part.partCount" name="partCount{{k}}" 
+                              #partCount="ngModel" (input)="onPartValueChange($event, k)">
+                          </div>
+                        </li>
+                        <li class="col-xs-2">
+                          <div class="form-group">
+                            <label class="sr-only" for="cost">Total Cost</label>
+                            <input type="text" class="form-control" placeholder="Total Cost" 
+                              required [(ngModel)]="part.cost" name="partscost{{k}}" 
+                              #cost="ngModel" readonly>
+                          </div>    
+                          <span (click)="createPartsList()" class="item-icon item-icon-sm">
+                            <span class="ui-plus-16"></span>
+                          </span>                    
+                          <span *ngIf="k>0" (click)="deletePartsList(k)" class="item-icon item-icon-delete item-icon-lg">
+                            <span class="ui-delete-18" role="button"></span>
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+  
+              <div class="row" *ngFor="let note of service.notes; let l=index;">
+                <div class="col-xs-12">
+                  <div class="row">
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group-title">
+                                    <h3 class="pull-left">Service Notes</h3>
+                                    <span (click)="createNoteList()" class="item-icon item-icon-sel">
+                                        <span class="ui-plus-16"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 borderd">
+                              <div [froalaEditor]="options" [(froalaModel)]="note.content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row">
+                  <div class="col-xs-8">
+                    <span class="checkbox">
+                      <span class="checkbox-wrapper">
+                        <label>
+                          <span class="checkbox-wrap">
+                            <input type="checkbox" class="checkbox-input" [(ngModel)]="note.privateFlag" name="privateFlag{{l}}"/>
+                            <span class="input-icon"></span>
+                          </span>
+                        </label>
+                        <span class="checkbox-text">Private</span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                </div>
+              </div>            
+  
+              <hr class="modal-hr mr-tp-10" />
+  
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <dl class="dl-horizontal dl-horizontal-footer row">
+                    <dt class="pd-top-10">Subtotal</dt>
+                    <dd>
+                      <div class="form-group clearfix mr-bt-10">
+                        <label class="sr-only" for="subtotal">Subtotal</label>
+                        <input [(ngModel)]="service.amount" name="amount" type="number" min="0" step="1" class="form-control form-field-sm pull-right" id="amount" placeholder="$0.00" readonly>
+                      </div>
+                    </dd>
+                    <dt class="pd-top-10">Discount</dt>
+                    <dd>
+                      <div class="form-group clearfix mr-bt-10">
+                        <label class="control-label sr-only" for="inputGroupSuccess4">Discount</label>
+                        <div class="input-group form-group-input-group">                         
+                          <div class="input-group-addon form-group-select-wrapper">
+                            <div style="width: 149px;" tabindex="0">
+                              <ng-select [(ngModel)]="service.discountType" name="discountType" #discountType="ngModel" placeholder="Choose" required>
+                                  <ng-option [value]="'Percentage'">Percentage</ng-option>
+                                  <ng-option [value]="'Amount'">Amount</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <input [(ngModel)]="service.discount" name="discount" type="number" class="form-control form-group-light-input" id="discount" aria-describedby="discount" (input)="calculateDiscount()">
+                        </div>
+                      </div>
+                    </dd>
+                    <!-- <dt class="pd-top-10">Include GST @7%</dt>
+                    <dd>
+                      <div class="form-group clearfix mr-bt-10">
+                        <label class="sr-only" for="gst">GST</label>
+                        <input [(ngModel)]="gst" name="gst" type="number" min="0" step="1" class="form-control form-field-sm  pull-right" id="gst" placeholder="$0.00" (change)="applyGst()">
+                      </div>
+                    </dd> -->
+                  </dl>
+                </div>
+              </div>
+              <hr class="modal-hr mr-tp-10" />
+              <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                  <div class="row">
+                    <div class="col-xs-5 col-xs-5 text-left">
+                      <span class="tag-name">Amount</span>
+                    </div>
+                    <div class="col-xs-7 col-xs-5 text-right">
+                      <span class="tag-name tag-name-gray">${{service.totalCost}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <hr class="modal-hr" />
+  
+              <div class="form-group text-right mg-0 mr-50">
+                <button (click)="close()" #cancelRef type="button" class="btn btn-default btn-md" data-dismiss="modal">Close</button>
+                <button [disabled]="!serviceForm.form.valid" type="submit" class="btn btn-primary mr-0 btn-md">Save</button>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

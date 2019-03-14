@@ -1,0 +1,101 @@
+<div class="page-content">
+  <div class="page-list">
+    <ul class="list-unstyled page-listing">
+      <li class="page-listing-header">
+        <ul class="list-unstyled row">
+          <li class="col-xs-2">
+            <span class="page-listing-header-title">Tasks</span>
+          </li>
+          <li class="col-xs-3">
+            <span class="page-listing-header-title">Description</span>
+          </li>
+          <li class="col-xs-2">
+            <span class="page-listing-header-title ">Cost</span>
+          </li>
+          <li class="col-xs-2">
+            <span class="page-listing-header-title ">Additional Duration</span>
+          </li>
+          <li class="col-xs-3"></li>
+        </ul>
+      </li>
+      <li class="page-listing-content" [hidden]="hideForm">
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" novalidate>
+          <ul class="list-unstyled row flex-start pg-row-pd-5">
+            <li class="col-xs-2">
+              <div class="form-group">
+                <label class="sr-only" for="taskName">Task Name</label>
+                <input type="text" class="form-control" formControlName="taskName" #taskName placeholder="Task Name">
+              </div>
+            </li>
+            <li class="col-xs-3">
+              <div class="form-group">
+                <label class="sr-only" for="description">Description</label>
+                <input type="text" class="form-control" formControlName="description" placeholder="Description">
+              </div>
+            </li>
+            <li class="col-xs-2">
+              <div class="form-group">
+                <label class="sr-only" for="cost">Cost</label>
+                <input type="number" min="0" class="form-control" formControlName="cost" placeholder="Cost">
+              </div>
+            </li>
+            <li class="col-xs-2">
+              <div class="form-group">
+                <label class="sr-only" for="duration">Duration</label>
+                <div class="group-form-control">
+                  <div class="row mr-0">
+                    <div class="col-sm-6 pd-0">
+                      <input type="number" min="0" formControlName="durationHours" placeholder="HH">
+                      <span class="semi-col">:</span>
+                    </div>
+                    <div class="col-sm-6 pd-0">
+                      <input type="number" min="0" formControlName="durationMinutes" placeholder="MM">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="col-xs-3 card-settings-tooltip text-right ">
+              <button type="button" (click)="resetForm()" class="btn btn-default visible-op card-settings-btn text-uppercase">Cancel</button>
+              <button type="submit" [disabled]="taskForm.invalid" class="btn btn-primary card-settings-btn text-uppercase">Save</button>
+            </li>
+          </ul>
+        </form>
+      </li>
+      <li class="page-listing-content" *ngFor="let task of tasks">
+        <ul class="list-unstyled row flex-start pg-row-pd-5">
+          <li class="col-xs-2">
+            <span class="page-listing-company-name">{{task.taskName}}</span>
+          </li>
+          <li class="col-xs-3">
+            <div class="media">
+              <div class="media-body">
+                <span class="page-listing-text">{{task.description}}</span>
+              </div>
+            </div>
+          </li>
+          <li class="col-xs-2">
+            <span class="page-listing-text">${{task.cost}}</span>
+          </li>
+          <li class="col-xs-2">
+            <span class="page-listing-text">{{task.durationHours}} Hours</span>
+          </li>
+          <li class="col-xs-3 card-settings-tooltip text-right">
+            <ul class="list-inline mr-r-30">
+              <li>
+                <a (click)="editTask(task.id)">
+                    <span class="ui-edit-16" role="button" data-toggle="tooltip" data-placement="top" title="Edit"></span>
+                </a>                
+              </li>
+              <li>
+                  <a (click)="deleteTask(task.id)">
+                    <span class="ui-delete-18" role="button" data-toggle="tooltip" data-placement="top" title="Delete"></span>
+                  </a>                
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>      
+    </ul>
+  </div>
+</div>

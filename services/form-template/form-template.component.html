@@ -1,0 +1,38 @@
+<div class="page-content">
+    <div class="page-list">
+        <ul class="list-unstyled page-listing">
+            <li class="page-listing-header">
+                <ul class="list-unstyled row">
+                    <li class="col-xs-2">
+                        <span class="page-listing-header-title">Tasks</span>
+                    </li>
+                    <li class="col-xs-6"></li>
+                </ul>
+            </li>
+            <ng-container *ngIf="customForms">
+                <li class="page-listing-content" *ngFor="let form of customForms; let i=index">
+                    <ul class="list-unstyled row flex-start pg-row-pd-5">
+                        <li class="col-xs-2">
+                            <span class="page-listing-company-name">{{form.label}}</span>
+                        </li>
+                        <li class="col-xs-5"></li>
+                        <li class="col-xs-2 card-settings-tooltip text-right">
+                            <ul class="list-inline mr-r-30">
+                                <li>
+
+                                    <span (click)="editJobForm(form.id, i)" class="ui-edit-16" id="newjob" data-toggle="modal" data-target="#edit-job-form" href="javascript:void(0)"></span>
+                                </li>
+                                <li>
+                                    <span (click)="deleteCustomForm(form.id,i)" class="ui-delete-18" role="button" data-toggle="tooltip" data-placement="top"
+                                        title="Delete"></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ng-container>
+        </ul>
+    </div>
+</div>
+
+<template #modalcontainerRef></template>

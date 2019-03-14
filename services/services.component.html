@@ -1,0 +1,132 @@
+<div class="col-xs-9 col-md-10">
+    <div class="tab-content pd-45 pd-b-100">
+        <span class="vertical-line"></span>
+        <div role="tabpanel" class="tab-pane fade in active" id="manage">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="card-title-group">
+                        <h2 class="card-h2 pull-left">Services</h2>
+                        <!-- <a *ngIf="activeTab=='services'" (click)="openForm()" class="btn btn-default pull-right" id="newservice" data-toggle="modal" data-target="#addNewService" href="javascript:void(0)">
+                            <span class="ui-plus-16 mr-r-5"></span>
+                            New Service
+                        </a> -->
+                        <a *ngIf="activeTab=='tasks'" (click)="openTaskForm()" class="btn btn-default pull-right" id="newservice" data-toggle="modal" data-target="#addNewService" href="javascript:void(0)">
+                            <span class="ui-plus-16 mr-r-5"></span>
+                            New Task
+                        </a>
+                        <a *ngIf="activeTab=='job'" (click)="openJobForm()" class="btn btn-default pull-right" id="newjob" data-toggle="modal" data-target="#edit-service" href="javascript:void(0)">
+                            <span class="ui-plus-16 mr-r-5"></span>
+                            New Job Form
+                        </a>
+                        <a *ngIf="activeTab=='footer'" (click)="openFooterForm()" class="btn btn-default pull-right" id="newFooter" data-toggle="modal" data-target="#add-footer" href="javascript:void(0)">
+                            <span class="ui-plus-16 mr-r-5"></span>
+                            New Footer
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-12">
+                    <div class="page-tabs">
+                        <ul class="nav nav-tabs mrb-45">
+                            <!-- <li>
+                                <a  class ='nav-disabled' (click)="setTab('services')" data-toggle="tab" href="#services">Services</a>
+                            </li> -->
+
+                            <li>
+                                <a  class ='nav-disabled' disabled data-toggle="tab" href="">Services</a>
+                            </li>
+
+
+                            <li  class="active">
+                                <a (click)="setTab('tasks')" data-toggle="tab" href="#tasks">Tasks</a>
+                            </li>
+                            <li>
+                                <a (click)="setTab('job')" data-toggle="tab" href="#job">Job Form</a>
+                            </li>
+                            <li>
+                                <a (click)="setTab('footer')" data-toggle="tab" href="#footer">Footer Template</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="services" class="tab-pane fade in active">
+                                <div class="page-content">
+                                    <div class="page-list">
+                                        <ul class="list-unstyled page-listing">
+                                            <li class="page-listing-header">
+                                                <ul class="list-unstyled row">
+                                                    <li class="col-xs-4">
+                                                        <span class="page-listing-header-title">Service Name</span>
+                                                    </li>
+                                                    <li class="col-xs-3">
+                                                        <span class="page-listing-header-title">Cost</span>
+                                                    </li>
+                                                    <li class="col-xs-3">
+                                                        <span class="page-listing-header-title ">Duration</span>
+                                                    </li>
+                                                    <li class="col-xs-2"></li>
+                                                </ul>
+                                            </li>
+
+                                            <li class="page-listing-content" *ngFor="let service of services.data">
+                                                <ul class="list-unstyled row">
+                                                    <li class="col-xs-4">
+                                                        <div class="media">
+                                                            <div class="media-body">
+                                                                <span class="page-listing-company-name">{{service.servicesName}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="col-xs-3">
+                                                        <div class="media">
+                                                            <div class="media-body">
+                                                                <span class="page-listing-text">${{service.totalCost? service.totalCost: 0}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="col-xs-3">
+                                                        <span class="page-listing-text">{{service.totalHours? service.totalHours: 0}} Hours</span>
+                                                    </li>
+                                                    <li class="col-xs-2 card-settings-tooltip text-right">
+                                                        <ul class="list-inline mr-r-30">
+                                                            <li>
+                                                                <a (click)="editForm(service.id)" data-toggle="modal" data-target="#editService">
+                                                                    <span data-toggle="modal" data-target="#edit-service" role="button">
+                                                                        <span class="ui-edit-16" role="button" data-toggle="tooltip" data-placement="top" title="Edit"></span>
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a (click)="deleteService(service.id)">
+                                                                    <span class="ui-delete-18" role="button" data-toggle="tooltip" data-placement="top" title="Delete"></span>
+                                                                </a>
+
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tasks" class="tab-pane fade">
+                                <app-list-task [events]="eventsSubject.asObservable()"></app-list-task>
+                            </div>
+                            <div id="job" class="tab-pane fade">
+                                    <app-form-template [customForm]="customForm"></app-form-template>
+                            </div>
+
+                            <div id="footer" class="tab-pane fade">
+                                <app-footer-template  [footerTemplates]="templates" ></app-footer-template>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template #modalcontainer></template>
